@@ -1,0 +1,4 @@
+requests
+protobuf
+zeroconf
+git+https://github.com/madmod/pychromecast.git
