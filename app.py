@@ -20,6 +20,7 @@ DISPLAY_NAME = os.getenv('DISPLAY_NAME')
 IGNORE_CEC = os.getenv('IGNORE_CEC') == 'True'
 
 if IGNORE_CEC:
+    print('Ignoring CEC for Chromecast', DISPLAY_NAME)
     pychromecast.IGNORE_CEC.append(DISPLAY_NAME)
 
 
@@ -108,23 +109,22 @@ def main_loop():
         time.sleep(1)
 
 main_loop()
-
-
 """
 
+casts = pychromecast.get_chromecasts()
+if len(casts) == 0:
+    print('No Devices Found')
+    exit()
+
+cast = next(cc for cc in casts if DISPLAY_NAME in (None, '') or cc.device.friendly_name == DISPLAY_NAME)
+
+if not cast:
+    print('Chromecast with name', DISPLAY_NAME, 'not found')
+    exit()
+
+DashboardLauncher(cast, dashboard_url=DASHBOARD_URL)
+
+# Keep running
 while True:
-    casts = pychromecast.get_chromecasts()
-    if len(casts) == 0:
-        print("No Devices Found")
-        continue
-
-    cast = next(cc for cc in casts if DISPLAY_NAME in (None, '') or cc.device.friendly_name == DISPLAY_NAME)
-
-    #if not cast.is_idle:
-    #    print("Killing current running app")
-    #    cast.quit_app()
-
-    DashboardLauncher(cast, dashboard_url=DASHBOARD_URL)
-
     time.sleep(1)
 

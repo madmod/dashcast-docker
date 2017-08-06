@@ -1,3 +1,5 @@
+# This Dockerfile will only work with host networking enabled.
+
 # Use an official Python runtime as a parent image
 FROM python:3
 
@@ -11,8 +13,8 @@ ADD . /app
 RUN pip install -r requirements.txt
 
 # Define environment variables
-ENV DASHBOARD_URL "http://192.168.1.132:8080"
-ENV DISPLAY_NAME "Bedroom Display"
+ENV DASHBOARD_URL "https://darksky.net"
+ENV DISPLAY_NAME ""
 ENV IGNORE_CEC "True"
 
 # Run app.sh when the container launches
