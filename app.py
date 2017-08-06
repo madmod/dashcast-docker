@@ -46,7 +46,9 @@ class DashboardLauncher():
         # Check status on init.
         self.new_cast_status(self.device.status)
         # Launch dashboard on init.
-        self.launch_dashboard()
+        while True:
+            self.launch_dashboard()
+            time.sleep(60)
 
     def new_cast_status(self, cast_status):
         """ Called when a new cast status has been received. """
