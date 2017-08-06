@@ -69,7 +69,7 @@ class DashboardLauncher():
         """ Returns if there is currently an app running and (maybe) visible. """
         return (self.device.status is not None
                 and self.device.app_id is not None
-                and self.device.status.is_active_input  # Don't ignore CEC here because this works for my Vizio at least.
+                and (self.device.status.is_active_input or self.device.ignore_cec)
                 and (not self.device.status.is_stand_by and not self.device.ignore_cec))
 
     def is_dashboard_active(self):
