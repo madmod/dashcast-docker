@@ -32,6 +32,7 @@ class DashboardLauncher():
 
     def __init__(self, device, dashboard_url='https://home-assistant.io', dashboard_app_name='DashCast'):
         self.device = device
+        print('DashboardLauncher', self.device.name)
 
         self.controller = dashcast.DashCastController()
         self.device.register_handler(self.controller)
@@ -53,6 +54,7 @@ class DashboardLauncher():
 
         def should_launch():
             """ If the device is active, the dashboard is not already active, and no other app is active. """
+            print('should launch', self.is_device_active(), not self.is_dashboard_active(), not self.is_other_app_active())
             return (self.is_device_active()
                     and not self.is_dashboard_active()
                     and not self.is_other_app_active())
@@ -60,14 +62,14 @@ class DashboardLauncher():
         if should_launch():
             print('might launch dashboard in 10 seconds')
             time.sleep(10)
-            if should_launch():
-                self.launch_dashboard()
+        if should_launch():
+            self.launch_dashboard()
 
     def is_device_active(self):
         """ Returns if there is currently an app running and (maybe) visible. """
         return (self.device.status is not None
                 and self.device.app_id is not None
-                and (self.device.status.is_active_input) # Don't ignore CEC here because this works for my Vizio at least.
+                and self.device.status.is_active_input  # Don't ignore CEC here because this works for my Vizio at least.
                 and (not self.device.status.is_stand_by and not self.device.ignore_cec))
 
     def is_dashboard_active(self):
